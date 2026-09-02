@@ -1,26 +1,26 @@
 //! Process anagrams
 
-// Letter histogram type
+/// Letter histogram type
 pub type LetterHist = [u8; 26];
 
-// Make a histogram from a word
+/// Make a histogram from a word
 pub fn histogram(word: &str) -> LetterHist {
     todo!("Compute word histogram");
 }
 
-// Storage for anagram classes and their histogram keys
+/// Storage for anagram classes and their histogram keys
 pub struct AnagramClasses {
     pub class_keys: Vec<LetterHist>, // Histograms for each class
     pub class_offsets: Vec<usize>,   // off[i]..of[i+1] is range for class i
     pub word_ids: Vec<usize>,        // List of word IDs
 }
 
-// Recommended key-value pair for sorting/searching anagrams
+/// Recommended key-value pair for sorting/searching anagrams
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 struct AnagramKV(LetterHist, usize);
 
 impl AnagramClasses {
-    // Set up a new Anagrams struct
+    /// Set up a new Anagrams struct
     pub fn new(dict: &[String]) -> Self {
         // Recommended strategy:
         //
@@ -41,49 +41,47 @@ impl AnagramClasses {
         let class_keys = Vec::new();
         let class_offsets = Vec::new();
 
-        AnagramClasses {
+        Self {
             class_keys,
             class_offsets,
             word_ids,
         }
     }
 
-    // Get the number of classes
+    /// Get the number of classes
     pub fn num_classes(&self) -> usize {
         self.class_keys.len()
     }
 
-    // Get the length of a class
+    /// Get the length of a class
     pub fn len_class(&self, id: usize) -> usize {
         self.class_offsets[id + 1] - self.class_offsets[id]
     }
 
-    // Get length of longest class
+    /// Get length of longest class. Returns 0 if `self.num_classes() == 0`.
     pub fn len_class_max(&self) -> usize {
         todo!("Find the length of the longest anagram class")
     }
 
-    // Get the class lengths
+    /// Get the class lengths
     pub fn len_class_hist(&self) -> Vec<usize> {
         todo!("Return a vector where len[i] is the number of classes of len i+1");
     }
 
-    // Get anagram class by index
+    /// Get anagram class by index
     pub fn get_class(&self, id: usize) -> &[usize] {
         let lo = self.class_offsets[id];
         let hi = self.class_offsets[id + 1];
         &self.word_ids[lo..hi]
     }
 
-    // Look up an anagram class
+    /// Look up an anagram class. Returns `Ok(ids)` if there is a match for the word, `None` if no match.
     pub fn lookup(&self, word: &str) -> Option<&[usize]> {
-        // Return Ok(ids) if there is a matche for the word, None if no match
         todo!()
     }
 
-    // Get maxagram classes
+    /// Get maxagram classes. Returns a vector of all class ids for maxagram classes.
     pub fn maxagrams(&self) -> Vec<usize> {
-        // Return a vector of all class ids for maxagram classes
         todo!()
     }
 }
