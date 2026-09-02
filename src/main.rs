@@ -1,10 +1,10 @@
 use std::env;
+use std::path::Path;
 use std::process;
 use std::time::Instant;
-use std::path::Path;
 
-mod corpus;
 mod anagrams;
+mod corpus;
 
 fn print_dict_stats(dict: &[String]) {
     let nwords = dict.iter().map(|w| w.len()).max().unwrap_or_default();
@@ -48,23 +48,25 @@ fn main() {
         println!("# --- Run {}", args[iarg]);
         let start = Instant::now();
         match args[iarg].as_str() {
-
             // Print stats about the dictionary
             "stats" => {
                 print_dict_stats(&dict);
-            },
+            }
 
             // Print histogram for some word
             "histogram" => {
-                if iarg+1 < args.len() {
+                if iarg + 1 < args.len() {
                     iarg += 1;
-                    println!("# Histogram for {} is {:?}",
-                             args[iarg], anagrams::histogram(&args[iarg]));
+                    println!(
+                        "# Histogram for {} is {:?}",
+                        args[iarg],
+                        anagrams::histogram(&args[iarg])
+                    );
                 } else {
                     eprintln!("Syntax: histogram word");
                     process::exit(1);
                 }
-            },
+            }
 
             // Print max use of each letter over all words in dict
             "max_histogram" => {
@@ -77,11 +79,11 @@ fn main() {
                     }
                 }
                 println!("# {:?}", hist);
-            },
+            }
 
             // Print anagram class for a particular word
             "anagram" => {
-                if iarg+1 < args.len() {
+                if iarg + 1 < args.len() {
                     iarg += 1;
                     println!("# Look for anagrams of {}", args[iarg]);
                     let class = anagrams.lookup(&args[iarg]);
@@ -94,20 +96,20 @@ fn main() {
                     eprintln!("Syntax: anagram word");
                     process::exit(1);
                 }
-            },
+            }
 
             // Print all maxagram classes
             "maxagrams" => {
                 for c in anagrams.maxagrams() {
                     print_words(&dict, anagrams.get_class(c));
                 }
-            },
+            }
 
             // Print histogram of class lengths
             "anagram_lens" => {
                 println!("# Number of classes {}", anagrams.num_classes());
                 println!("# Class lengths {:?}", anagrams.len_class_hist());
-            },
+            }
 
             _ => {
                 eprintln!("Unknown command {}", args[iarg]);
