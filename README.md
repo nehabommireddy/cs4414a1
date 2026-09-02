@@ -6,6 +6,13 @@
 - Task 1 will be due Tue, Sep 9 at 11:59 PM via Gradescope
 - Tasks 2-4 are still being re-done, will be posted in the next couple days
 
+## Changelog
+Sept 2nd
+- Specify behavior of `AnagramClasses::len_class_max()` when no classes exist
+- Autoformat with `cargo fmt`
+- Add gitignore
+- Change line comments `//` to doc comments doc comments `///`
+
 ## Introduction
 
 Anagrams are pairs of words that use the same letters, but in a
