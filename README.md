@@ -1,5 +1,11 @@
 # CS4414 HW1 - Maximal anagrams
 
+## Logistics
+
+- This homework may be done individually or with a partner (recommended)
+- Task 1 will be due Tue, Sep 9 at 11:59 PM via Gradescope
+- Tasks 2-4 are still being re-done, will be posted in the next couple days
+
 ## Introduction
 
 Anagrams are pairs of words that use the same letters, but in a
