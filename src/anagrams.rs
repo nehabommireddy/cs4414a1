@@ -20,10 +20,8 @@ pub struct AnagramClasses {
 struct AnagramKV(LetterHist, usize);
 
 impl AnagramClasses {
-
     // Set up a new Anagrams struct
     pub fn new(dict: &[String]) -> Self {
-
         // Recommended strategy:
         //
         // - Form a vector of (histogram, word id) pairs
@@ -37,13 +35,17 @@ impl AnagramClasses {
         // There's more than one way to do this.  I used a functional
         // approach (and used dedup_by_key to get the class offsets /
         // keys).
-        
+
         // Placeholder code so that everything compiles initially
         let word_ids = Vec::new();
         let class_keys = Vec::new();
         let class_offsets = Vec::new();
- 
-        AnagramClasses { class_keys, class_offsets, word_ids }
+
+        AnagramClasses {
+            class_keys,
+            class_offsets,
+            word_ids,
+        }
     }
 
     // Get the number of classes
@@ -53,7 +55,7 @@ impl AnagramClasses {
 
     // Get the length of a class
     pub fn len_class(&self, id: usize) -> usize {
-        self.class_offsets[id+1] - self.class_offsets[id]
+        self.class_offsets[id + 1] - self.class_offsets[id]
     }
 
     // Get length of longest class
@@ -69,7 +71,7 @@ impl AnagramClasses {
     // Get anagram class by index
     pub fn get_class(&self, id: usize) -> &[usize] {
         let lo = self.class_offsets[id];
-        let hi = self.class_offsets[id+1];
+        let hi = self.class_offsets[id + 1];
         &self.word_ids[lo..hi]
     }
 
