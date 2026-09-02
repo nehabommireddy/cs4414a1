@@ -1,6 +1,6 @@
 use std::env;
 use std::path::Path;
-use std::process;
+use std::process::ExitCode;
 use std::time::Instant;
 
 mod anagrams;
@@ -19,22 +19,26 @@ fn print_words(dict: &[String], ids: &[usize]) {
     }
 }
 
-fn main() {
+fn main() -> ExitCode {
     let args: Vec<String> = env::args().collect();
 
     // Check for dictionary argument
     if args.len() <= 1 {
         eprintln!("No dictionary specified");
-        process::exit(1);
+        return ExitCode::FAILURE;
     }
 
     // Load dictionary
     let start = Instant::now();
     let path = Path::new(&args[1]);
-    let dict = corpus::load_words(path).unwrap_or_else(|e| {
-        eprintln!("{e}");
-        process::exit(1);
-    });
+    let dict = match corpus::load_words(path) {
+        Err(e) => {
+            eprintln!("{e}");
+            return ExitCode::FAILURE;
+        }
+        Ok(d) => d,
+    };
+
     println!("# Load time is {:?}", start.elapsed());
 
     // Create anagram index
@@ -64,7 +68,7 @@ fn main() {
                     );
                 } else {
                     eprintln!("Syntax: histogram word");
-                    process::exit(1);
+                    return ExitCode::FAILURE;
                 }
             }
 
@@ -94,7 +98,7 @@ fn main() {
                     }
                 } else {
                     eprintln!("Syntax: anagram word");
-                    process::exit(1);
+                    return ExitCode::FAILURE;
                 }
             }
 
@@ -113,10 +117,12 @@ fn main() {
 
             _ => {
                 eprintln!("Unknown command {}", args[iarg]);
-                process::exit(1);
+                return ExitCode::FAILURE;
             }
         };
         println!("# --- operation time is {:?}", start.elapsed());
         iarg += 1;
     }
+
+    ExitCode::SUCCESS
 }
