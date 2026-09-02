@@ -32,11 +32,11 @@ fn main() -> ExitCode {
     let start = Instant::now();
     let path = Path::new(&args[1]);
     let dict = match corpus::load_words(path) {
-        Ok(d) => d,
         Err(e) => {
             eprintln!("{e}");
             return ExitCode::FAILURE;
         }
+        Ok(d) => d,
     };
 
     println!("# Load time is {:?}", start.elapsed());
