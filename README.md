@@ -10,6 +10,7 @@
 Sept 4th:
 - Clarify docs for `AnagramClasses::lookup`
 - Fix docs for `AnagramClasses:::lookup` where `Ok` was used instead of `Some`
+- Define class key in comments for `AnagramClasses::new`
 
 Sept 2nd:
 - Specify behavior of `AnagramClasses::len_class_max()` when no classes exist

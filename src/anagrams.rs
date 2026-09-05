@@ -28,7 +28,10 @@ impl AnagramClasses {
         // - Sort the vector (you can use the sort method)
         // - Get the id part of the entries; this will be word_ids
         // - Find the start of each equivalence class and store in
-        //   the class_offsets vector (and store the key in class_keys)
+        //   the class_offsets vector (and store the key in class_keys); the
+        //   index of a class's histogram in `class_keys` and its offset in
+        //   `class_offsets` should be the same and we will refer to this index
+        //   as the class key
         // - Add the number of words to the end of the class_offsets vector
         // - Form and return the struct
         //
