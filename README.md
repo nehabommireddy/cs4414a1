@@ -8,6 +8,7 @@
 
 ## Changelog
 Sept 4th:
+- Clarify docs for `AnagramClasses::lookup`
 - Fix docs for `AnagramClasses:::lookup` where `Ok` was used instead of `Some`
 
 Sept 2nd:
