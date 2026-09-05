@@ -7,6 +7,9 @@
 - Tasks 2-4 are still being re-done, will be posted in the next couple days
 
 ## Changelog
+Sept 4th:
+- Fix docs for `AnagramClasses:::lookup` where `Ok` was used instead of `Some`
+
 Sept 2nd:
 - Specify behavior of `AnagramClasses::len_class_max()` when no classes exist
 - Autoformat with `cargo fmt`
