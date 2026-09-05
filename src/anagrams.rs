@@ -75,7 +75,7 @@ impl AnagramClasses {
         &self.word_ids[lo..hi]
     }
 
-    /// Look up an anagram class. Returns `Ok(ids)` if there is a match for the word, `None` if no match.
+    /// Look up an anagram class. Returns `Some(ids)` if there is a match for the word, `None` if no match.
     pub fn lookup(&self, word: &str) -> Option<&[usize]> {
         todo!()
     }
