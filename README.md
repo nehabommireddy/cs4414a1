@@ -7,6 +7,10 @@
 - Tasks 2-4 are still being re-done, will be posted in the next couple days
 
 ## Changelog
+
+Sept 5th:
+- Update docs regarding submission format
+
 Sept 4th:
 - Clarify docs for `AnagramClasses::lookup`
 - Fix docs for `AnagramClasses:::lookup` where `Ok` was used instead of `Some`
@@ -36,10 +40,15 @@ We have two main goals for this assignment:
 2. Think through performance implications of how we represent data.
 
 To this end, we'll tackle a few tasks involving anagram classes and
-maxagrams, both for individual words and for pairs of words.  As an
-anti-procrastination measure, the first task will be due on Monday,
-Sep 7 at 11:59 PM.  The remaining tasks will be due one week after
-that on Sep 14.
+maxagrams, both for individual words and for pairs of words.
+
+As an anti-procrastination measure, the first task will be due on
+Tuesday, Sep 8 at 11:59 PM.  The remaining tasks will be due one week
+after that on Mon, Sep 14 at 11:59 PM.  You may submit `anagrams.rs`
+on its own, or a zip file containing the full package, including
+`Cargo.toml` and the `src/*.rs` files.  For the final submission (not
+the check-in) you may also submit a `crate` created with the `crate
+package` command.
 
 [wiki-equivalence]: https://en.wikipedia.org/wiki/Equivalence_relation
 
