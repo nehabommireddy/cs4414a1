@@ -5,7 +5,11 @@ pub type LetterHist = [u8; 26];
 
 /// Make a histogram from a word
 pub fn histogram(word: &str) -> LetterHist {
-    todo!("Compute word histogram");
+    let mut hist: LetterHist = [0; 26]
+    for char in word {
+        let num = char.to_digit(10)
+        hist[num] += 1
+    }
 }
 
 /// Storage for anagram classes and their histogram keys
