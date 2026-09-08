@@ -12,7 +12,6 @@ Sept 7th:
 - Change crate name to `p1_maxagram` for `Cargo.toml`
 - Add student-visible tests
 - Add task 2-4 under `src/keys.rs`
-- Update docs regarding submission format
 
 Sept 5th:
 - Update docs regarding submission format
@@ -54,13 +53,9 @@ after that on Mon, Sep 14 at 11:59 PM.  All submissions will be due
 via Gradescope.  You make work alone or with a partner; in the latter
 case, please make a single submission.
 
-For the check-in, you may submit `anagrams.rs` on its own, or a zip
-file containing the full package, including `Cargo.toml` and the
-`src/*.rs` files.  You may also submit a `crate` created with the
-`crate package` command.
-
-For the final submission, please create a `crate` file created with
-the `crate package` command.
+You may submit `anagrams.rs` on its own, or a zip file containing the
+full package, including `Cargo.toml` and the `src/*.rs` files.  You
+may also submit a `crate` created with the `crate package` command.
 
 [wiki-equivalence]: https://en.wikipedia.org/wiki/Equivalence_relation
 
@@ -193,9 +188,7 @@ Can we encode histograms as 64-bit integers?  Yes!
 
 Suppose $\mathcal{S}$ is the set of strings over our alphabet.
 Let's define a set of *histogram hash functions* on $\mathcal{S}$ of the form
-$$
-  h(s) = \sum_{c \in s} u(c)
-$$
+$$h(s) = \sum_{c \in s} u(c)$$
 where $u$ maps a character in our alphabet to a value in
 $\mathbb{Z}/(N\mathbb{Z})$.
 
