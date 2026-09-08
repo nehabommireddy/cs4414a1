@@ -5,11 +5,12 @@ pub type LetterHist = [u8; 26];
 
 /// Make a histogram from a word
 pub fn histogram(word: &str) -> LetterHist {
-    let mut hist: LetterHist = [0; 26]
-    for char in word {
-        let num = char.to_digit(10)
-        hist[num] += 1
+    let mut hist: LetterHist = [0; 26];
+    for char in word.chars() {
+        let num = (char as u8 - b'a') as usize;
+        hist[num] += 1;
     }
+    hist
 }
 
 /// Storage for anagram classes and their histogram keys
@@ -25,8 +26,7 @@ struct AnagramKV(LetterHist, usize);
 
 impl AnagramClasses {
     /// Set up a new Anagrams struct
-    pub fn new(dict: &[String]) -> Self {
-        // Recommended strategy:
+    // Recommended strategy:
         //
         // - Form a vector of (histogram, word id) pairs
         // - Sort the vector (you can use the sort method)
@@ -44,9 +44,26 @@ impl AnagramClasses {
         // keys).
 
         // Placeholder code so that everything compiles initially
-        let word_ids = Vec::new();
-        let class_keys = Vec::new();
-        let class_offsets = Vec::new();
+    pub fn new(dict: &[String]) -> Self {
+        let mut word_ids = Vec::new();
+        let mut class_keys = Vec::new();
+        let mut class_offsets = Vec::new();
+        let mut v = vec![];
+        for i in 0..dict.len() {
+            v.push((histogram(&dict[i]), i));
+            
+        }
+        v.sort();
+        let mut curr_hist: Option<LetterHist> = None;
+        for i in 0..v.len(){
+            word_ids.push(v[i].1);
+            if curr_hist != Some(v[i].0) {
+                class_keys.push(v[i].0);
+                class_offsets.push(i);
+                curr_hist = Some (v[i].0);
+            }
+        }
+        class_offsets.push(v.len());
 
         Self {
             class_keys,
