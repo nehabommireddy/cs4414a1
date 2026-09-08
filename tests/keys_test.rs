@@ -79,17 +79,17 @@ fn test_key_lookup64() {
 pub struct SillyHash(u8);
 
 #[test]
-fn check_maxagrams64() {
+fn check_maxagrams_silly() {
     test_maxagrams::<SillyHash>();
 }
 
 #[test]
-fn test_unique64() {
-    assert!(keys_are_unique::<SillyHash>());
+fn test_unique_silly() {
+    assert!(!keys_are_unique::<SillyHash>());
 }
 
 #[test]
-fn test_key_lookup64() {
+fn test_key_lookup_silly() {
     test_key_lookup::<SillyHash>();
 }
 
