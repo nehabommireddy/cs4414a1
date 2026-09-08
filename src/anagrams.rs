@@ -84,12 +84,25 @@ impl AnagramClasses {
 
     /// Get length of longest class. Returns 0 if `self.num_classes() == 0`.
     pub fn len_class_max(&self) -> usize {
-        todo!("Find the length of the longest anagram class")
+        let mut max = 0;
+        for i in 0..self.num_classes(){
+            let len = self.len_class(i);
+            if len > max {
+                max = len;
+            }
+        }
+        max
     }
 
     /// Get the class lengths
     pub fn len_class_hist(&self) -> Vec<usize> {
-        todo!("Return a vector where len[i] is the number of classes of len i+1");
+        let max = self.len_class_max();
+        let mut hist = vec![0; max];
+        for i in 0..self.num_classes(){
+            let len = self.len_class(i);
+            hist[len-1] += 1;
+        }
+        hist
     }
 
     /// Get anagram class by index
@@ -102,11 +115,20 @@ impl AnagramClasses {
     /// Look up an anagram class. Returns `Some(ids)`, the word ids of class whose members are anagrams of `word`, or
     /// `None` if no such class exists.
     pub fn lookup(&self, word: &str) -> Option<&[usize]> {
-        todo!()
+        let hist = histogram(word);
+        let id = self.class_keys.binary_search(&hist).ok()?;
+        Some(self.get_class(id))
     }
 
     /// Get maxagram classes. Returns a vector of all class ids for maxagram classes.
     pub fn maxagrams(&self) -> Vec<usize> {
-        todo!()
+        let max = self.len_class_max();
+        let mut result = Vec::new();
+        for i in 0..self.num_classes(){
+            if self.len_class(i) == max {
+                result.push(i);
+            }
+        }
+        result
     }
 }
