@@ -6,8 +6,8 @@ pub type LetterHist = [u8; 26];
 /// Make a histogram from a word
 pub fn histogram(word: &str) -> LetterHist {
     let mut hist: LetterHist = [0; 26];
-    for char in word.chars() {
-        let num = (char as u8 - b'a') as usize;
+    for c in word.bytes() {
+        let num = (c as u8 - b'a') as usize;
         hist[num] += 1;
     }
     hist
@@ -25,32 +25,13 @@ pub struct AnagramClasses {
 struct AnagramKV(LetterHist, usize);
 
 impl AnagramClasses {
-    /// Set up a new Anagrams struct
-    // Recommended strategy:
-        //
-        // - Form a vector of (histogram, word id) pairs
-        // - Sort the vector (you can use the sort method)
-        // - Get the id part of the entries; this will be word_ids
-        // - Find the start of each equivalence class and store in
-        //   the class_offsets vector (and store the key in class_keys); the
-        //   index of a class's histogram in `class_keys` and its offset in
-        //   `class_offsets` should be the same and we will refer to this index
-        //   as the class key
-        // - Add the number of words to the end of the class_offsets vector
-        // - Form and return the struct
-        //
-        // There's more than one way to do this.  I used a functional
-        // approach (and used dedup_by_key to get the class offsets /
-        // keys).
-
-        // Placeholder code so that everything compiles initially
     pub fn new(dict: &[String]) -> Self {
         let mut word_ids = Vec::new();
         let mut class_keys = Vec::new();
         let mut class_offsets = Vec::new();
-        let mut v = vec![];
+        let mut v: Vec<AnagramKV> = Vec::new();
         for i in 0..dict.len() {
-            v.push((histogram(&dict[i]), i));
+            v.push(AnagramKV(histogram(&dict[i]), i));
             
         }
         v.sort();
