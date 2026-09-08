@@ -7,7 +7,7 @@ pub type LetterHist = [u8; 26];
 pub fn histogram(word: &str) -> LetterHist {
     let mut hist: LetterHist = [0; 26];
     for c in word.bytes() {
-        let num = (c as u8 - b'a') as usize;
+        let num = (c - b'a') as usize;
         hist[num] += 1;
     }
     hist
@@ -32,16 +32,15 @@ impl AnagramClasses {
         let mut v: Vec<AnagramKV> = Vec::new();
         for i in 0..dict.len() {
             v.push(AnagramKV(histogram(&dict[i]), i));
-            
         }
         v.sort();
         let mut curr_hist: Option<LetterHist> = None;
-        for i in 0..v.len(){
+        for i in 0..v.len() {
             word_ids.push(v[i].1);
             if curr_hist != Some(v[i].0) {
                 class_keys.push(v[i].0);
                 class_offsets.push(i);
-                curr_hist = Some (v[i].0);
+                curr_hist = Some(v[i].0);
             }
         }
         class_offsets.push(v.len());
@@ -66,7 +65,7 @@ impl AnagramClasses {
     /// Get length of longest class. Returns 0 if `self.num_classes() == 0`.
     pub fn len_class_max(&self) -> usize {
         let mut max = 0;
-        for i in 0..self.num_classes(){
+        for i in 0..self.num_classes() {
             let len = self.len_class(i);
             if len > max {
                 max = len;
@@ -79,9 +78,9 @@ impl AnagramClasses {
     pub fn len_class_hist(&self) -> Vec<usize> {
         let max = self.len_class_max();
         let mut hist = vec![0; max];
-        for i in 0..self.num_classes(){
+        for i in 0..self.num_classes() {
             let len = self.len_class(i);
-            hist[len-1] += 1;
+            hist[len - 1] += 1;
         }
         hist
     }
@@ -105,7 +104,7 @@ impl AnagramClasses {
     pub fn maxagrams(&self) -> Vec<usize> {
         let max = self.len_class_max();
         let mut result = Vec::new();
-        for i in 0..self.num_classes(){
+        for i in 0..self.num_classes() {
             if self.len_class(i) == max {
                 result.push(i);
             }
