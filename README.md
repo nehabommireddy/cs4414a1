@@ -265,7 +265,8 @@ an anagram of the target word(s).
 
 To solve this problem, we recommend a strategy of iterating over
 dictionary words $w_1$ and then checking every word $w_2$ such that
-$h(w_2) = h(t) - h(w_2)$.  It *is* necessary to check every word
+$h(w_2) = h(t) - h(w_2)$.  It *is* necessary to check every match
+to make sure that it is an actual anagram.
 
 ## Task 4: Maximal word pair anagrams (for fun)
 
