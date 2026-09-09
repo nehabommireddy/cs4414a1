@@ -1,4 +1,5 @@
 use p1_maxagram::{corpus, keys};
+use p1_maxagram::keys::Key;
 use std::ops::{Add, Sub};
 use std::path::Path;
 
@@ -85,20 +86,20 @@ fn test_maxagrams_silly() {
     // (no fair just returning "0" for all cases)
     assert_eq!(classes.len(), 2);
 
-    let c0 = classes[0];
-    let c1 = classes[1];
+    let c0 = &classes[0];
+    let c1 = &classes[1];
 
     // The two classes should have different keys
-    let k0 = SillyHash::new(dict[c0[0]]);
-    let k1 = SillyHash::new(dict[c1[0]]);
+    let k0 = SillyHash::new(&dict[c0[0]]);
+    let k1 = SillyHash::new(&dict[c1[0]]);
     assert_ne!(k0, k1);
 
     // And the same key within each hash
     for word_id in c0 {
-        assert_eq(SillyHash::new(dict[word_id]), k0);
+        assert_eq(SillyHash::new(&dict[*word_id]), k0);
     }
     for word_id in c1 {
-        assert_eq(SillyHash::new(dict[word_id]), k1);
+        assert_eq(SillyHash::new(&dict[*word_id]), k1);
     }
 }
 
