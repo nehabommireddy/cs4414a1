@@ -29,20 +29,6 @@ fn test_key_lookup<T: keys::Key>() {
     assert_eq!(post, postref);
 }
 
-fn test_maxagrams<T: keys::Key>() {
-    let dict = load_sample();
-    let idx = keys::DictKeyIndex::<T>::new(&dict);
-    let classes = idx.maxagrams();
-    assert_eq!(classes.len(), 2);
-    assert_eq!(classes[0].len(), 5);
-    assert_eq!(classes[1].len(), 5);
-    let c0 = sorted_class(&dict, &classes[0]);
-    let c1 = sorted_class(&dict, &classes[1]);
-    let listen = ["enlist", "inlets", "listen", "silent", "tinsel"];
-    let pots = ["opts", "pots", "spot", "stop", "tops"];
-    assert!(c0 == listen && c1 == pots || c1 == listen && c0 == pots);
-}
-
 #[test]
 fn check_num_classes() {
     let dict = load_sample();
@@ -58,8 +44,18 @@ fn check_len_class_max() {
 }
 
 #[test]
-fn check_maxagrams64() {
-    test_maxagrams::<keys::HashKey64>();
+fn test_maxagrams64() {
+    let dict = load_sample();
+    let idx = keys::DictKeyIndex::<keys::HashKey64>::new(&dict);
+    let classes = idx.maxagrams();
+    assert_eq!(classes.len(), 2);
+    assert_eq!(classes[0].len(), 5);
+    assert_eq!(classes[1].len(), 5);
+    let c0 = sorted_class(&dict, &classes[0]);
+    let c1 = sorted_class(&dict, &classes[1]);
+    let listen = ["enlist", "inlets", "listen", "silent", "tinsel"];
+    let pots = ["opts", "pots", "spot", "stop", "tops"];
+    assert!(c0 == listen && c1 == pots || c1 == listen && c0 == pots);
 }
 
 #[test]
@@ -78,9 +74,32 @@ fn test_key_lookup64() {
 
 pub struct SillyHash(u8);
 
+/// Per spec, this is *by hash key class* rather than by anagram class
 #[test]
-fn check_maxagrams_silly() {
-    test_maxagrams::<SillyHash>();
+fn test_maxagrams_silly() {
+    let dict = load_sample();
+    let idx = keys::DictKeyIndex::<keys::HashKey64>::new(&dict);
+    let classes = idx.maxagrams();
+
+    // We assume the hash is still fine enough to produce two classes
+    // (no fair just returning "0" for all cases)
+    assert_eq!(classes.len(), 2);
+
+    let c0 = classes[0];
+    let c1 = classes[1];
+
+    // The two classes should have different keys
+    let k0 = SillyHash::new(dict[c0[0]]);
+    let k1 = SillyHash::new(dict[c1[0]]);
+    assert_ne!(k0, k1);
+
+    // And the same key within each hash
+    for word_id in c0 {
+        assert_eq(SillyHash::new(dict[word_id]), k0);
+    }
+    for word_id in c1 {
+        assert_eq(SillyHash::new(dict[word_id]), k1);
+    }
 }
 
 #[test]
