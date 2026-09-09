@@ -31,7 +31,7 @@ fn test_key_lookup<T: keys::Key>() {
 
 fn test_maxagrams<T: keys::Key>() {
     let dict = load_sample();
-    let idx = keys::DictKeyIndex::<keys::HashKey64>::new(&dict);
+    let idx = keys::DictKeyIndex::<T>::new(&dict);
     let classes = idx.maxagrams();
     assert_eq!(classes.len(), 2);
     assert_eq!(classes[0].len(), 5);
