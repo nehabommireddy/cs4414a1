@@ -96,10 +96,10 @@ fn test_maxagrams_silly() {
 
     // And the same key within each hash
     for word_id in c0 {
-        assert_eq(SillyHash::new(&dict[*word_id]), k0);
+        assert_eq!(SillyHash::new(&dict[*word_id]), k0);
     }
     for word_id in c1 {
-        assert_eq(SillyHash::new(&dict[*word_id]), k1);
+        assert_eq!(SillyHash::new(&dict[*word_id]), k1);
     }
 }
 
