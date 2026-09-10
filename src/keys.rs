@@ -97,7 +97,7 @@ where
     pub fn len_class_hist(&self) -> Vec<usize> {
         let mut hist: Vec<usize> = vec![0; self.len_class_max()];
         for c in self.classes() {
-            hist[c.len()] += 1;
+            hist[c.len()-1] += 1;
         }
         hist
     }
