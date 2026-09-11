@@ -7,11 +7,14 @@ pub type LetterHist = [u8; 26];
 pub fn histogram(word: &str) -> LetterHist {
     let mut hist: LetterHist = [0; 26];
     for c in word.bytes() {
-        let num = (c - b'a') as usize;
-        hist[num] += 1;
+        if c >= b'a' && c <= b'z' {
+            let num = (c - b'a') as usize;
+            hist[num] += 1;
+        }
     }
     hist
 }
+
 
 /// Storage for anagram classes and their histogram keys
 pub struct AnagramClasses {

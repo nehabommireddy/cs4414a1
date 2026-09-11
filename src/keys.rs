@@ -11,6 +11,7 @@ pub trait Key:
 
 /// Implementation for a 64-bit hash key
 /// TODO: Derive all the required traits
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct HashKey64(u64);
 
 impl HashKey64 {
@@ -49,6 +50,36 @@ impl HashKey64 {
 /// NB: You should handle upper case (by conversion to lower)
 ///     and non-ASCII-alphabetic characters (by skipping them)
 
+impl Key for HashKey64 {
+    fn new(s: &str) -> Self {
+        let mut value = 0;
+        for c in s.bytes() {
+            let c = c.to_ascii_lowercase();
+            if c >= b'a' && c <= b'z' {
+                let num = (c as u8 - b'a') as usize;
+                value += HashKey64::HIST_CHAR_VAL[num];
+            }
+        }
+        HashKey64(value)
+    }
+}
+
+impl Add for HashKey64 {
+    type Output = Self;
+
+    fn add(self, other:Self) -> Self {
+        HashKey64(self.0.wrapping_add(other.0))
+    }
+}
+
+impl Sub for HashKey64 {
+    type Output = Self;
+
+    fn sub(self, other:Self) -> Self {
+        HashKey64(self.0.wrapping_sub(other.0))
+    }
+}
+
 /// Key-based dictionary index data type
 #[derive(Debug)]
 pub struct DictKeyIndex<'d, T: Key> {
@@ -58,29 +89,79 @@ pub struct DictKeyIndex<'d, T: Key> {
 
 /// TODO: Add an iterator for the DictKeyIndex
 pub struct KeyClassIterator<'a, T: Key> {
+    index: &'a [(T, usize)],
+    position: usize,
 }
 
 /// TODO: Implement the Iterator trait for KeyClassIterator<'a, T>
 /// NB: The Item type should be a slice of the index array from DictKeyIndex.
+impl<'a, T: Key> Iterator for KeyClassIterator<'a, T> {
+    type Item = &'a [(T, usize)];
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.position >= self.index.len() {
+            return None;
+        }
+
+        let start = self.position;
+        let current_key = self.index[start].0;
+
+        while self.position < self.index.len()
+            && self.index[self.position].0 == current_key
+        {
+            self.position += 1;
+        }
+
+        Some(&self.index[start..self.position])
+    }
+}
 
 impl<'d, T> DictKeyIndex<'d, T>
 where
     T: Key,
 {
     /// Create a new index (you will need to add a lifetime annotation here)
-    pub fn new(dict: &[String]) -> Self {
-        todo!("Create the new index")
+    pub fn new(dict: &'d [String]) -> Self {
+        let mut index = Vec::new();
+        for (i, value) in dict.iter().enumerate() {
+            let key = T::new(value);
+            index.push((key, i));
+        }
+        index.sort();
+        DictKeyIndex {
+            dict,
+            index,
+        }
     }
 
     /// Return true iff the histogram equivalence and anagram equivalence
     /// are the same for this dictionary.
     pub fn keys_are_unique(&self) -> bool {
-        todo!("Return true on equivalence, false if collisions")
+        for class in self.classes() {
+        if class.len() <= 1 {
+            continue;
+        }
+
+        let first_index = class[0].1;
+        let first_hist = anagrams::histogram(&self.dict[first_index]);
+
+        for (_, dict_index) in &class[1..] {
+            let hist = anagrams::histogram(&self.dict[*dict_index]);
+
+            if hist != first_hist {
+                return false;
+                }
+            }
+        }
+        true
     }
 
     /// Return an iterator through the hash key classes
     pub fn classes<'a>(&'a self) -> KeyClassIterator<'a, T> {
-        todo!("Return iterator through hash key classes")
+        KeyClassIterator {
+        index: &self.index,
+        position: 0,
+        }
     }
 
     /// Get the number of hash key classes
@@ -105,7 +186,18 @@ where
     /// Get the maximal classes according to the hash function.
     /// This may differ from the maxagrams if there are collisions.
     pub fn maxagrams(&self) -> Vec<Vec<usize>> {
-        todo!("Compute maximal hash key classes")
+        let max_len = self.len_class_max();
+        let mut result = Vec::new();
+        for class in self.classes() {
+            if class.len() == max_len {
+                let mut indices = Vec::new();
+                for (_, i) in class {
+                indices.push(*i);
+                }
+                result.push(indices);
+            }
+        }
+        result
     }
 
     /// Look up class (should work even if the keys are non-unique)
